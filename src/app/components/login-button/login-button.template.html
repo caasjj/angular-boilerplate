@@ -1,0 +1,63 @@
+<!--
+Use as follows:
+ <login-button button-direction="left" current-user="vm.currentUser" bad-login="vm.badLogin"></login-button>
+
+ button-direction: left|right, one-directional binding
+ current-user    : string scope property, bidirectional binding
+ badLogin        : boolean scope property indicating invalid login attempt, bidirectional binding (stays true for 2.5s)
+-->
+<div class="login-button-component row">
+
+    <form name="loginButton" class="form-inline col-sm-12" ng-submit="vm.login(loginButton, $event)" autocomplete="off"
+          novalidate>
+
+        <!-- Inputs -->
+        <!--<span ng-show="vm._isOpen" aria-labelledby="single-button">-->
+        <fieldset ng-show="!vm.currentUser && vm._isOpen">
+
+            <div class="username">
+                <input name="username" type="text" class="form-control" placeholder="username" ng-model="vm.username"
+                       ng-model-options="{ updateOn: 'blur' }" ng-minlength="3" ng-maxlength="10" ng-required="true">
+                <!-- Validation messages -->
+            <span ng-if="vm._submitted && !form.$valid && !vm.currentUser && vm._isOpen"
+                  ng-messages="loginButton.username.$error">
+              <span ng-message="minlength"> Username must be at least 3 characters long.</span>
+              <span ng-message="maxlength" class="alert  error"
+                    role="alert">Username is too long (min 10 characters).</span>
+              <span ng-message="required" class="alert  error" roler="alert">Username is required.</span>
+            </span>
+            </div>
+
+            <div class="password">
+                <input name="password" type="password" class="form-control" placeholder="password"
+                       ng-model="vm.password" , ng-keypress="vm.detectEnter($event, loginButton)"
+                       required>
+                <!-- Validation messages -->
+            <span ng-if="vm._submitted && !form.$valid && !vm.currentUser && vm._isOpen"
+                  ng-messages="loginButton.password.$error">
+              <span ng-message="required" class="alert  error" role="alert">Password is required.</span>
+            </span>
+            </div>
+
+        </fieldset>
+        <!--<span ng-show="vm.currentUser && vm._isOpen" ng-click="vm.logout(loginButton)">-->
+        <button type="button" class="btn btn-default btn-xs logout"
+                ng-show="vm.currentUser && vm._isOpen" ng-click="vm.logout(loginButton)">Logout
+        </button>
+        <!--</span>-->
+        <!--</span>-->
+
+        <!-- Control button -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary" ng-click="vm.login(loginButton, $event)">
+          <span class="fa fa-chevron-circle-left" ng-show="vm.buttonDirection==='left'"
+                ng-click="vm.toggle($event)"></span>
+                {{ vm.currentUser || vm.label }}
+          <span class="fa fa-chevron-circle-right" ng-show="vm.buttonDirection==='right'"
+                ng-click="vm.toggle($event)"></span>
+            </button>
+        </div>
+
+    </form>
+
+</div>

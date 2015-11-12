@@ -1,0 +1,11 @@
+@import "./_vendor-overrides.scss";
+@import "../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/stylesheets/_bootstrap.scss";
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url("../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/fonts/bootstrap/glyphicons-halflings-regular.eot");
+  src: url("../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"),
+  url("../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"),
+  url("../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"),
+  url("../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"),
+  url("../../../jspm_packages/github/twbs/bootstrap-sass@3.3.5/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }

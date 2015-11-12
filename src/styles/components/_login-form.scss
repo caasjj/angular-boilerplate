@@ -1,0 +1,13 @@
+
+.login-form-component {
+  input.ng-invalid.ng-touched {
+    box-shadow: inset 0 0 0.45em red;
+  }
+
+  //input.ng-valid.ng-touched {
+  //  box-shadow: inset 0 0 0.45em $brand-success;
+  //}
+}
+
+
+

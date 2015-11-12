@@ -1,0 +1,49 @@
+.login-button-component form {
+
+  display: inline-block;
+
+  div, fieldset {
+    display: inline-block;
+  }
+
+  .username, .password {
+    display: inline-block;
+    position: relative;
+    span[ng-message] {
+      color: $brand-danger;
+      position: absolute;
+      left: 0;
+      top: ($font-size-base) * 2.5;
+      margin: 0;
+      padding: 0 $padding-base-horizontal;
+    }
+  }
+
+  button.logout {
+    margin-top: 0.5em;
+
+  }
+}
+
+login-button.direction-left {
+  .login-button-component {
+    float: right;
+    form {
+      fieldset, button.logout {
+        float: left;
+      }
+    }
+  }
+}
+
+login-button.direction-right {
+  .login-button-component {
+    float: left;
+    form {
+      fieldset, button.logout {
+        float: right;
+      }
+    }
+  }
+}
+
