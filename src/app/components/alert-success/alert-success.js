@@ -4,14 +4,13 @@
  * @license   GPL-3.0
  */
 'use strict';
-
-import {View, Component} from '../../app'; // jshint unused: false
+import decorators from '../../app'; // jshint unused: false
 
 //start-non-standard
-@Component({
+@decorators.Component({
   selector: 'alert-success'
 })
-@View({
+@decorators.View({
   template: `
         <div ng-if="vm.hasSuccess" class="row">
             <div class="col-md-12 col-sm-12">
@@ -28,5 +27,5 @@ import {View, Component} from '../../app'; // jshint unused: false
     successMessage: '='
   }
 })
-  //end-non-standard
+
 class AlertSuccess {}

@@ -8,7 +8,7 @@ const srcPath   = `${rootPath}/src`
 const buildPath = `${rootPath}/build`
 const testPath  = `${rootPath}/test`
 const tempPath  = `${rootPath}/.temp`
-
+const docPath   = `${rootPath}/docs`
 const images = `${srcPath}/assets/images/**/*.{png,jpg,jpeg,tiff}`
 const fonts  = `${srcPath}/assets/fonts/**/*.{woff,woff2,svg,eot,ttf}`
 const icons  = `${srcPath}/assets/icons/**/*.{ico}`
@@ -38,6 +38,10 @@ const paths = {
     e2dTest: `${testPath}/e2d`,
     karmaConf: `${testPath}/karma.conf.js`
   },
+  docs: {
+    api: `${docPath}/api`,
+    docco: `${docPath}/docco`
+  },
   temp: tempPath,
   gulpfile:  gulpfile,
   gulpTasks: gulpTasks,
@@ -58,6 +62,8 @@ const karmaConf = paths.test.karmaConf
 const e2eTest = paths.test.e2eTest
 const temp = paths.temp
 const gulpfiles = paths.gulpfiles
+const apiDocs = paths.docs.api
+const doccoDocs = paths.docs.docco
 
 export default paths
 
@@ -76,6 +82,8 @@ export {
   images,
   fonts,
   icons,
+  apiDocs,
+  doccoDocs,
   unitTest,
   e2eTest,
   karmaConf,

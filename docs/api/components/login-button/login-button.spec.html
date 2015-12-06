@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>login-button.spec.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>login-button.spec.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * Created by caasjj on 11/9/15.
+ */</span>
+<span class="hljs-pi">'use strict'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'angular-mocks'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'./login-button'</span>
+
+describe( <span class="hljs-string">'LoginButtonValidator'</span>, () =&gt; {
+
+  let $compile, $rootScope, scope, render
+
+  beforeEach( () =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>‘module’ is used by ES6 module loader</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    angular.mock.module(
+      <span class="hljs-string">'app'</span>,
+      $exceptionHandlerProvider =&gt; {
+        $exceptionHandlerProvider.mode( <span class="hljs-string">'log'</span> )
+      }
+    )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>angular.mock.inject( (<em>$compile</em>, <em>$rootScope</em>) =&gt; {</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    inject( (_$compile_, _$rootScope_) =&gt; {
+
+      $compile = _$compile_
+      $rootScope = _$rootScope_
+      scope = $rootScope.$<span class="hljs-keyword">new</span>()
+
+      render = (component) =&gt; {
+        <span class="hljs-keyword">let</span> element = angular.element( component )
+        <span class="hljs-keyword">let</span> compiledElement = $compile( element )( scope )
+        $rootScope.$digest()
+        <span class="hljs-keyword">return</span> compiledElement
+
+      }
+
+    } )
+
+  } )
+
+  describe( <span class="hljs-string">'LoginButton controller'</span>, () =&gt; {
+
+    it( <span class="hljs-string">'should exist '</span>, () =&gt; {
+
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button&gt;&lt;/login-button&gt;`</span> )
+
+      <span class="hljs-keyword">let</span> controller = element.controller( <span class="hljs-string">'loginButton'</span> )
+
+      expect( element.controller( <span class="hljs-string">'loginButton'</span> ) ).toBeDefined()
+
+      expect( controller.toggle ).toBeDefined()
+      expect( controller.login ).toBeDefined()
+      expect( controller.logout ).toBeDefined()
+      expect( controller.detectEnter ).toBeDefined()
+
+    } )
+
+    it( <span class="hljs-string">'should control the component'</span>, () =&gt; {
+
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button&gt;&lt;/login-button&gt;`</span> )
+      <span class="hljs-keyword">let</span> elementScope = element.isolateScope().vm
+      <span class="hljs-keyword">let</span> controller = element.controller( <span class="hljs-string">'loginButton'</span> )
+
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )
+      controller.toggle()
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">true</span> )
+
+    } )
+
+  } )
+
+
+  describe( <span class="hljs-string">'LoginButton scope'</span>, () =&gt; {
+    it( <span class="hljs-string">'should have scope bindings '</span>, () =&gt; {
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button button-direction="left" current-user="currentUser" bad-login="badLogin"&gt;&lt;/login-button&gt;`</span> )
+
+      <span class="hljs-keyword">let</span> elementScope = element.isolateScope().vm
+
+      scope.buttonDirection = <span class="hljs-string">'left'</span>
+      scope.currentUser = <span class="hljs-string">'Bob'</span>
+      scope.badLogin = <span class="hljs-literal">false</span>
+      scope.$apply()
+
+      expect( elementScope.buttonDirection ).toEqual( scope.buttonDirection )
+      expect( elementScope.currentUser ).toEqual( scope.currentUser )
+      expect( elementScope.badLogin ).toEqual( scope.badLogin )
+
+      <span class="hljs-keyword">let</span> controller = element.controller( <span class="hljs-string">'loginButton'</span> )
+
+    } )
+  } )
+
+  describe( <span class="hljs-string">'Logging and exception handling '</span>, () =&gt; {
+
+    describe( <span class="hljs-string">'should capture log messages and exceptions'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+
+      it( <span class="hljs-string">'should have a value injected '</span>, angular.mock.inject( ($log, $timeout, $exceptionHandler) =&gt; {
+
+          $timeout( () =&gt; $log.log( <span class="hljs-number">1</span> ) )
+          $timeout( () =&gt; {
+            $log.log( <span class="hljs-number">2</span> )
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>( <span class="hljs-string">'Bad Stuff'</span> )
+          } )
+          $timeout( () =&gt; $log.log( <span class="hljs-number">3</span> ) )
+
+          $timeout.flush()
+
+          expect( $exceptionHandler.errors[<span class="hljs-number">0</span>].constructor.name ).toEqual( <span class="hljs-string">'Error'</span> )
+          expect( $exceptionHandler.errors[<span class="hljs-number">0</span>].message ).toEqual( <span class="hljs-string">'Bad Stuff'</span> )
+          expect( $log.log.logs ).toEqual( [[<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>]] )
+
+        } )
+      )
+
+    } )
+
+  } )
+
+  describe( <span class="hljs-string">'Controller test with $controller'</span>, () =&gt; {
+
+    it( <span class="hljs-string">'should run the controller'</span>, () =&gt; {
+      inject( $controller =&gt; {
+
+        <span class="hljs-keyword">var</span> dController = $controller( <span class="hljs-string">'loginButtonController'</span>, {}, {buttonDirection: <span class="hljs-string">'right'</span>} )
+
+        expect( dController.buttonDirection ).toEqual( <span class="hljs-string">'right'</span> )
+
+      } )
+
+    } )
+  } )
+
+  describe( <span class="hljs-string">'LoginButton DOM handling '</span>, () =&gt; {
+
+    it( <span class="hljs-string">'should show correction direction of chevron arrow '</span>, () =&gt; {
+
+      scope.buttonDirection = <span class="hljs-string">'right'</span>
+      scope.$apply()
+
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button button-direction="{{buttonDirection}}"&gt;&lt;/login-button&gt;`</span> )
+      <span class="hljs-keyword">let</span> elementScope = element.isolateScope().vm
+
+      <span class="hljs-keyword">let</span> chevron = {
+        left: angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">`.fa-chevron-circle-left`</span> ) ),
+        right: angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">`.fa-chevron-circle-right`</span> ) )
+      }
+
+      expect( chevron.left.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( chevron.right.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">false</span> )
+
+    } )
+
+    it( <span class="hljs-string">'should open and close with click of chevron '</span>, () =&gt; {
+
+      scope.buttonDirection = <span class="hljs-string">'left'</span>
+      scope.$apply()
+
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button button-direction="{{buttonDirection}}" current-user="currentUser"&gt;&lt;/login-button&gt;`</span> )
+      <span class="hljs-keyword">let</span> elementScope = element.isolateScope().vm
+
+      <span class="hljs-keyword">let</span> chevron = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">`.fa-chevron-circle-left`</span> ) )
+      <span class="hljs-keyword">let</span> inputs = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">'fieldset'</span> ) )
+      <span class="hljs-keyword">let</span> logoutButton = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">'button.logout'</span> ) )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Should start closed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Open the login button</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      chevron.triggerHandler( <span class="hljs-string">'click'</span> )
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">true</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">false</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Close it back up</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      chevron.triggerHandler( <span class="hljs-string">'click'</span> )
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+
+    } )
+
+    it( <span class="hljs-string">'should present logout button and remove inputs on login '</span>, () =&gt; {
+
+      scope.buttonDirection = <span class="hljs-string">'left'</span>
+      scope.currentUser = <span class="hljs-string">'Bob'</span>
+      scope.$apply()
+
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button button-direction="{{buttonDirection}}" current-user="currentUser"&gt;&lt;/login-button&gt;`</span> )
+      <span class="hljs-keyword">let</span> elementScope = element.isolateScope().vm
+
+      <span class="hljs-keyword">let</span> chevron = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">`.fa-chevron-circle-left`</span> ) )
+      <span class="hljs-keyword">let</span> inputs = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">'fieldset'</span> ) )
+      <span class="hljs-keyword">let</span> logoutButton = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">'button.logout'</span> ) )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Should start closed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Open the login button</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      chevron.triggerHandler( <span class="hljs-string">'click'</span> )
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">true</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">false</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Close it back up</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      chevron.triggerHandler( <span class="hljs-string">'click'</span> )
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+
+    } )
+
+    it( <span class="hljs-string">'should  remove logout button and present inputs on logout '</span>, () =&gt; {
+
+      scope.buttonDirection = <span class="hljs-string">'left'</span>
+      scope.currentUser = <span class="hljs-string">'Bob'</span>
+      scope.$apply()
+
+      <span class="hljs-keyword">let</span> element = render( <span class="hljs-string">`&lt;login-button button-direction="{{buttonDirection}}" current-user="currentUser"&gt;&lt;/login-button&gt;`</span> )
+      <span class="hljs-keyword">let</span> elementScope = element.isolateScope().vm
+
+      <span class="hljs-keyword">let</span> chevron = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">`.fa-chevron-circle-left`</span> ) )
+      <span class="hljs-keyword">let</span> inputs = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">'fieldset'</span> ) )
+      <span class="hljs-keyword">let</span> logoutButton = angular.element( element[<span class="hljs-number">0</span>].querySelector( <span class="hljs-string">'button.logout'</span> ) )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Should start closed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Open the login button</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      chevron.triggerHandler( <span class="hljs-string">'click'</span> )
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">true</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">false</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Click the logout button</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      logoutButton.triggerHandler( <span class="hljs-string">'click'</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Button should be closed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">false</span> )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Open it back up</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      chevron.triggerHandler( <span class="hljs-string">'click'</span> )
+      expect( elementScope._isOpen ).toEqual( <span class="hljs-literal">true</span> )
+      expect( inputs.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">false</span> )
+      expect( logoutButton.hasClass( <span class="hljs-string">'ng-hide'</span> ) ).toEqual( <span class="hljs-literal">true</span> )
+
+    } )
+
+  } )
+
+} )</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

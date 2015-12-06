@@ -1,11 +1,10 @@
-
 import './account/account'
 import './account-detail/account-detail'
 
-import {RouteConfig} from '../../app'
+import decorators from '../../app'
 import template from './app-layout.template.html!text'
 
-@RouteConfig('app', {
+@decorators.RouteConfig('app', {
   url: '',
   abstract: true,
   template: template

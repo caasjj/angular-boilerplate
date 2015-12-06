@@ -3,11 +3,11 @@
  */
 'use strict'
 
-import {RouteConfig, Inject} from '../../../app'
+import decorators from '../../../app'
 import template from './registration.template.html!text'
 
-@RouteConfig( 'auth.registration', {
-  url: '/registration',
+@decorators.RouteConfig( 'main-auth.registration', {
+  url: '/main-registration',
   template: template
 } )
 class RegistrationController {

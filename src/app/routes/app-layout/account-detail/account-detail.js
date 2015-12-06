@@ -1,8 +1,8 @@
-import {RouteConfig} from '../../../app'
+import decorators from '../../../app'
 
 import template from './account-detail.template.html!text'
 
-@RouteConfig('app.account.account-detail', {
+@decorators.RouteConfig('app.account.account-detail', {
   url: '/account-detail',
   template: template
 })

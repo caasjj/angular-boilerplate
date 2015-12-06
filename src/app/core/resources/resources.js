@@ -4,3 +4,4 @@
 'use strict'
 
 import './user/user.js'
+import './account/account'

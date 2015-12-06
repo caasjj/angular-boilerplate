@@ -1,0 +1,5 @@
+import './src/routes/routes'
+import './src/components/components'
+import './src/directives/directives'
+import './src/services/services'
+import auth from './src/main'

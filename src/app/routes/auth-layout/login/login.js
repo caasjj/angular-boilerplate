@@ -3,11 +3,11 @@
  */
 'use strict'
 
-import {RouteConfig, Inject} from '../../../app'
+import decorators from '../../../app'
 import template from './login.template.html!text'
 
-@RouteConfig( 'auth.login', {
-  url: '/login',
+@decorators.RouteConfig( 'main-auth.login', {
+  url: '/main-login',
   template: template
 } )
 class LoginController {

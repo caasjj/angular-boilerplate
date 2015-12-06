@@ -1,10 +1,10 @@
-import {Inject, Service} from '../../../app'
+import decorators from '../../../app'
 //import Promise from 'bluebird'
 
-@Service( {
+@decorators.Service( {
   serviceName: 'AuthService'
 } )
-@Inject('$q', '$http', 'UserResource')
+@decorators.Inject('$q', '$http', 'UserResource')
 class AuthService {
 
   constructor($q, $http, UserResource) {

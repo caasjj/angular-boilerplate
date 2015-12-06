@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>base-resource.live.spec.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>base-resource.live.spec.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * Created by caasjj on 11/11/15.
+ */</span>
+<span class="hljs-pi">'use strict'</span>
+
+<span class="hljs-keyword">import</span> angular <span class="hljs-keyword">from</span>  <span class="hljs-string">'angular'</span>
+<span class="hljs-keyword">import</span> BaseResource <span class="hljs-keyword">from</span> <span class="hljs-string">'./base-resource'</span>
+
+describe( <span class="hljs-string">'BaseResourceLiveVerifier'</span>, () =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>let $injector = angular.element( document ).injector(),</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">let</span> $injector = angular.injector( [<span class="hljs-string">'ng'</span>] ),
+    $http = $injector.get( <span class="hljs-string">'$http'</span> ),
+    userResource = <span class="hljs-keyword">new</span> BaseResource( <span class="hljs-string">'user'</span>, $http, <span class="hljs-string">'http://localhost:1337'</span> ),
+    accountResource = <span class="hljs-keyword">new</span> BaseResource( <span class="hljs-string">'account'</span>, $http, <span class="hljs-string">'http://localhost:1337'</span> )
+
+
+  <span class="hljs-keyword">let</span> dummyUser = {
+      email: <span class="hljs-string">'JoeBlow@gmail.com'</span>,
+      password: <span class="hljs-string">'JBHasAnAwesomePassword'</span>
+    },
+    dummyAccount = {
+      type: <span class="hljs-string">"Facebook"</span>
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>let userResource, accountResource
+angular.module(‘app’)
+beforeEach( $injector =&gt; {
+ let $http = $injector().get( ‘$http’ )
+   userResource = new BaseResource( ‘user’, $http, ‘<a href="http://localhost:1337">http://localhost:1337</a>‘ ),
+   accountResource = new BaseResource( ‘account’, $http, ‘<a href="http://localhost:1337">http://localhost:1337</a>‘ )
+})</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  describe( <span class="hljs-string">'Creating a resource '</span>, () =&gt; {
+
+    it( <span class="hljs-string">'should create a resource '</span>, done =&gt; {
+
+      <span class="hljs-keyword">let</span> userId
+
+      userResource
+        .create( dummyUser )
+        .then( user =&gt; {
+          <span class="hljs-keyword">return</span> user.data.id
+        } )
+        .then( id =&gt; {
+          userId = id
+          <span class="hljs-keyword">return</span> userResource.findOne( id )
+        } )
+        .then( user =&gt; {
+          expect( user.data.email ).toEqual( <span class="hljs-string">'JoeBlow@gmail.com'</span> )
+        } )
+        .then( () =&gt; {
+          <span class="hljs-keyword">return</span> userResource.delete( userId )
+        } )
+        .catch( err =&gt; {
+          <span class="hljs-keyword">return</span> userResource.delete( userId )
+          done( err )
+        } )
+        .finally( () =&gt; {
+          done()
+        } )
+
+    } )
+  } )
+
+
+  describe( <span class="hljs-string">'Updating a resource '</span>, () =&gt; {
+
+    it( <span class="hljs-string">'should create a resource '</span>, done =&gt; {
+
+      <span class="hljs-keyword">let</span> userId,
+        updatedEmail = <span class="hljs-string">'JoeSchmoe@yahoo.com'</span>
+
+      userResource
+        .create( dummyUser )
+        .then( user =&gt; {
+          <span class="hljs-keyword">return</span> user.data.id
+        } )
+        .then( id =&gt; {
+          userId = id
+          <span class="hljs-keyword">return</span> userResource.findOne( userId )
+        } )
+        .then( user =&gt; {
+          <span class="hljs-keyword">return</span> userResource.update( user.data.id, {
+            email: updatedEmail
+          } )
+        } )
+        .then( user =&gt; {
+          expect( user.data.id ).toEqual( userId )
+          expect( user.data.email ).toEqual( updatedEmail )
+        } )
+        .then( () =&gt; {
+          <span class="hljs-keyword">return</span> userResource.delete( userId )
+        } )
+        .catch( err =&gt; {
+          <span class="hljs-keyword">return</span> userResource.delete( userId )
+          done( err )
+        } )
+        .finally( () =&gt; {
+          done()
+        } )
+
+    } )
+  } )
+
+  describe( <span class="hljs-string">'Creating an associated resource '</span>, () =&gt; {
+
+    <span class="hljs-keyword">let</span> userId, accountId
+
+    it( <span class="hljs-string">'should create a new resource and associate it '</span>, done =&gt; {
+
+      userResource
+        .create( dummyUser )
+        .then( user =&gt; {
+          userId = user.data.id
+          expect( userId ).toBeGreaterThan( <span class="hljs-number">0</span> )
+          <span class="hljs-keyword">return</span> userResource.createAndAssociate( userId, <span class="hljs-string">'accounts'</span>, dummyAccount )
+        } )
+        .then( user =&gt; {
+          expect( user.data.id ).toEqual( userId )
+          expect( user.data.accounts ).toBeDefined()
+          expect( user.data.accounts[<span class="hljs-number">0</span>].type ).toEqual( dummyAccount.type )
+          <span class="hljs-keyword">return</span> user.data.accounts[<span class="hljs-number">0</span>].id
+        } )
+        .then( id =&gt; {
+          accountId = id
+          <span class="hljs-keyword">return</span> accountResource.findOne( id )
+        } )
+        .then( account =&gt; {
+          expect( account.data.type ).toEqual( dummyAccount.type )
+        } )
+        .then( () =&gt; {
+          <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all( [
+            userResource.delete( userId ),
+            accountResource.delete( accountId )
+          ] )
+        } )
+        .catch( err =&gt; {
+          userResource.delete( userId )
+          accountResource.delete( accountId )
+          done( err )
+        } )
+        .finally( () =&gt; {
+          done()
+        } )
+    } )
+  } )
+
+} )</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

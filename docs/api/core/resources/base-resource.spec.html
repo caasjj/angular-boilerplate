@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>base-resource.spec.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>base-resource.spec.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> <span class="hljs-string">'angular-mocks'</span>
+
+<span class="hljs-keyword">import</span> BaseResource <span class="hljs-keyword">from</span> <span class="hljs-string">'./base-resource'</span>
+
+
+describe( <span class="hljs-string">'BaseResourceVerifier'</span>, () =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>let resourceRegExp = (resourceName) =&gt; {
+ return new RegExp(<code>\/api/${resourceName}\/[a-z]*</code>);
+}
+let idRegExp = (resourceName) =&gt; {
+ return new RegExp( <code>\/api/${resourceName}\/(\\d+|[a-z]*)</code> )
+}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">let</span> baseResource, $httpBackend, $http,
+    resourceName = <span class="hljs-string">'widget'</span>,
+    aWidget = {
+      id: <span class="hljs-string">'0'</span>,
+      data: <span class="hljs-string">'test'</span>
+    },
+    widgets = [
+      {
+        id: <span class="hljs-string">'0'</span>,
+        data: <span class="hljs-string">'test1'</span>
+      },
+      {
+        id: <span class="hljs-string">'1'</span>,
+        data: <span class="hljs-string">'test2'</span>
+      },
+      {
+        id: <span class="hljs-string">'2'</span>,
+        data: <span class="hljs-string">'test1'</span>
+      },
+      {
+        id: <span class="hljs-string">'3'</span>,
+        data: <span class="hljs-string">'test3'</span>
+      }
+    ],
+    newWidget = {
+      data: <span class="hljs-string">'testNew'</span>
+    }
+
+  beforeEach( inject( (_$httpBackend_, _$http_) =&gt; {
+      baseResource = <span class="hljs-keyword">new</span> BaseResource( resourceName, _$http_ )
+      $httpBackend = _$httpBackend_
+      $http = _$http_
+    } )
+  )
+
+  afterEach( <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $httpBackend.verifyNoOutstandingRequest();
+  } );
+
+  describe( <span class="hljs-string">'Construction '</span>, () =&gt; {
+
+    it( <span class="hljs-string">'baseResource object should have the correct properties'</span>, () =&gt; {
+
+      expect( baseResource.transport ).toEqual( $http )
+      expect( baseResource.route ).toEqual( <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>`</span> )
+      expect( baseResource.find ).toBeDefined()
+      expect( baseResource.find.constructor.name ).toEqual( <span class="hljs-string">'Function'</span> )
+      expect( baseResource.findOne ).toBeDefined()
+      expect( baseResource.findOne.constructor.name ).toEqual( <span class="hljs-string">'Function'</span> )
+      expect( baseResource.create ).toBeDefined()
+      expect( baseResource.create.constructor.name ).toEqual( <span class="hljs-string">'Function'</span> )
+      expect( baseResource.update ).toBeDefined()
+      expect( baseResource.update.constructor.name ).toEqual( <span class="hljs-string">'Function'</span> )
+      expect( baseResource.delete ).toBeDefined()
+      expect( baseResource.delete.constructor.name ).toEqual( <span class="hljs-string">'Function'</span> )
+
+    } )
+
+  } )
+
+  describe( <span class="hljs-string">'Fetching resources using GET method'</span>, () =&gt; {
+
+    it( <span class="hljs-string">'using .findOne(id) should get an item based on its id'</span>, () =&gt; {
+
+      $httpBackend.when( <span class="hljs-string">'GET'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>/0`</span> )
+                  .respond( (method, url) =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">return</span> ( [<span class="hljs-number">200</span>, widgets[<span class="hljs-number">0</span>]])
+                  } )
+
+      baseResource
+        .findOne( <span class="hljs-number">0</span> )
+        .then( response =&gt; {
+          expect( response.status ).toEqual( <span class="hljs-number">200</span> )
+          expect( response.data ).toEqual( widgets[<span class="hljs-number">0</span>] )
+        } )
+
+      $httpBackend.flush()
+    } )
+
+    it( <span class="hljs-string">'using .find() should get a collection'</span>, () =&gt; {
+
+      $httpBackend.when( <span class="hljs-string">'GET'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>`</span> )
+                  .respond( (method, url) =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">return</span> [<span class="hljs-number">200</span>, widgets]
+                  } )
+
+      baseResource
+        .find()
+        .then( response =&gt; {
+          expect( response.status ).toEqual( <span class="hljs-number">200</span> )
+          expect( response.data ).toEqual( widgets )
+        } )
+
+
+      $httpBackend.flush()
+    } )
+
+    it( <span class="hljs-string">'using .find(query) should get the items queried'</span>, () =&gt; {
+
+      $httpBackend.when( <span class="hljs-string">'GET'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>`</span> )
+                  .respond( (method, url, data) =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}, ${data}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">let</span> matches = widgets.filter( widget =&gt; {
+                      <span class="hljs-keyword">return</span> widget.data === data
+                    } )
+                    <span class="hljs-keyword">return</span> [<span class="hljs-number">200</span>, matches]
+                  } )
+
+      baseResource
+        .find( {
+          data: <span class="hljs-string">'test1'</span>
+        } )
+        .then( response =&gt; {
+          expect( response.status ).toEqual( <span class="hljs-number">200</span> )
+          expect( response.data.length ).toEqual( <span class="hljs-number">2</span> )
+          expect( response.data[<span class="hljs-number">0</span>] ).toEqual( {
+            id: <span class="hljs-string">'0'</span>,
+            data: <span class="hljs-string">'test1'</span>
+          } )
+          expect( response.data[<span class="hljs-number">1</span>] ).toEqual( {
+            id: <span class="hljs-string">'2'</span>,
+            data: <span class="hljs-string">'test1'</span>
+          } )
+        } )
+
+
+      $httpBackend.flush()
+    } )
+
+  } )
+
+  describe( <span class="hljs-string">'Creating resources'</span>, () =&gt; {
+
+    it( <span class="hljs-string">'using .create(params) should create a resource'</span>, () =&gt; {
+
+      $httpBackend.when( <span class="hljs-string">'POST'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>`</span> )
+                  .respond( (method, url, data) =&gt; {
+                    data = <span class="hljs-built_in">JSON</span>.parse( data )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}, ${data}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">let</span> newItem = <span class="hljs-built_in">Object</span>.assign( {id: <span class="hljs-string">'4'</span>}, data )
+                    widgets.push( newItem )
+                    <span class="hljs-keyword">return</span> [<span class="hljs-number">201</span>, {id: newItem.id}]
+                  } )
+
+      $httpBackend.when( <span class="hljs-string">'DELETE'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>/4`</span> )
+                  .respond( (method, url) =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+                    <span class="hljs-keyword">if</span> (widgets.length === <span class="hljs-number">5</span>) {
+                      <span class="hljs-keyword">let</span> returnWidget = widgets.pop()
+                      <span class="hljs-keyword">if</span> (returnWidget.id === <span class="hljs-string">'4'</span> &amp;&amp; returnWidget.data == <span class="hljs-string">'newData'</span>) {
+                        <span class="hljs-keyword">return</span> ( [<span class="hljs-number">200</span>, widgets.pop()] )
+                      } <span class="hljs-keyword">else</span> {
+                        <span class="hljs-keyword">return</span> ( [<span class="hljs-number">404</span>, <span class="hljs-string">'Wrong widget fetched at id 4'</span>])
+                      }
+                    } <span class="hljs-keyword">else</span> {
+                      <span class="hljs-keyword">return</span> [<span class="hljs-number">404</span>, <span class="hljs-string">'No widget with id 4'</span>]
+                    }
+                  } )
+
+      baseResource</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>create the resource</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        .create( newWidget )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>get the response id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        .then( response =&gt; {
+          expect( response.status ).toEqual(<span class="hljs-number">201</span>)
+          <span class="hljs-keyword">return</span> response.data.id
+        } )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>delete it back, from its id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        .then( id =&gt; {
+          <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all( [baseResource.delete( id ), id] )
+        } )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>make sure you created and deleted the right object in the store</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        .then( (response, id) =&gt; {
+          expect( response.status ).toEqual( <span class="hljs-number">200</span> )
+          expect( response.data ).toEqual( <span class="hljs-built_in">Object</span>.assign( {id: id}, newData ) )
+
+        } )
+
+      $httpBackend.flush()
+
+    } )
+
+    describe( <span class="hljs-string">'Updating a resource'</span>, () =&gt; {
+
+      it( <span class="hljs-string">'using .update(id,params) should update the resource'</span>, () =&gt; {
+
+        $httpBackend.when( <span class="hljs-string">'PUT'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>/2`</span> )
+                    .respond( (method, url, data) =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                      widgets[<span class="hljs-number">2</span>].data = <span class="hljs-built_in">JSON</span>.parse( data).data
+                      <span class="hljs-keyword">return</span> [<span class="hljs-number">200</span>, widgets[<span class="hljs-number">2</span>]]
+                    } )
+
+        $httpBackend.when( <span class="hljs-string">'GET'</span>, <span class="hljs-string">`/api/<span class="hljs-subst">${resourceName}</span>/2`</span> )
+                    .respond( (method, url) =&gt; {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>console.log( <code>${method}, ${url}</code> )</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                      <span class="hljs-keyword">return</span> ( [<span class="hljs-number">200</span>, widgets[<span class="hljs-number">2</span>]])
+                    } )
+
+        baseResource
+
+        .update(<span class="hljs-number">2</span>, {
+          data: <span class="hljs-string">"SomethingNew!"</span>
+        })
+
+        .then( response =&gt; {
+          expect( response.status ).toEqual( <span class="hljs-number">200</span> )
+          <span class="hljs-keyword">return</span> response.data.id
+        })
+
+        .then( id =&gt; {
+          <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all([baseResource.findOne(id), id])
+        })
+
+        .then( (response, id) =&gt; {
+          expect( response.status ).toEqual( <span class="hljs-number">200</span> )
+          expect( response.data ).toEqual( <span class="hljs-built_in">Object</span>.assign({id:id, data:<span class="hljs-string">'SomethingNew!'</span>}) )
+        })
+
+        $httpBackend.flush()
+      } )
+
+    } )
+  } )
+
+
+} )</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

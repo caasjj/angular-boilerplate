@@ -1,4 +1,4 @@
-import {Component, View, Inject} from '../../app'
+import decorators from '../../app'
 import template from './login-button.template.html!text'
 
 function _clearForm(form) {
@@ -9,34 +9,35 @@ function _clearForm(form) {
   this._isOpen = false
 }
 
-@Component( {
+@decorators.Component( {
   selector: 'login-button'
 } )
 
-@View( {
+@decorators.View( {
   template: template,
   bindToController: {
     buttonDirection: '@',
     currentUser: '=',
     badLogin: '=badLogin',
   },
-  link: function(scope, element) {
+
+  link: function (scope, element) {
     if (scope.vm.buttonDirection === 'right') {
-      element.addClass('direction-right')
+      element.addClass( 'direction-right' )
     } else {
-      element.addClass('direction-left')
+      element.addClass( 'direction-left' )
     }
-    angular.element(document).on('click', () => {
+    angular.element( document ).on( 'click', () => {
       scope.vm._isOpen = false
       scope.$apply()
-    })
-    element.on('click', ($event) => {
+    } )
+    element.on( 'click', ($event) => {
       $event.stopPropagation()
-    })
+    } )
   }
 } )
 
-@Inject('AuthService', '$timeout' )
+@decorators.Inject( 'AuthService', '$timeout' )
 class loginButtonController {
 
   constructor(AuthService, $timeout) {
@@ -74,7 +75,7 @@ class loginButtonController {
     this.AuthService.login( credentials )
         .then( res => {
           this.currentUser = res.username
-          _clearForm.call(this, form )
+          _clearForm.call( this, form )
         } )
         .catch( (err) => {
           this.badLogin = true
@@ -86,15 +87,14 @@ class loginButtonController {
 
   logout(form) {
     this.currentUser = null
-    _clearForm.call(this, form )
+    _clearForm.call( this, form )
   }
 
   detectEnter($event, form) {
     if ($event.charCode === 13) {
-      this.login(form)
+      this.login( form )
     }
   }
-
 
 
 }

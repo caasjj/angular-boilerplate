@@ -2,11 +2,11 @@
  * Created by caasjj on 11/2/15.
  */
 'use strict'
-import {Config, Run, Inject} from '../../app'
+import decorators from '../../app'
 
 class AppConfig {
-  @Config()
-  @Inject( '$locationProvider', '$urlRouterProvider' )
+  @decorators.Config()
+  @decorators.Inject( '$locationProvider', '$urlRouterProvider' )
   static configFactory($locationProvider, $urlRouterProvider) {
 
     $locationProvider.html5Mode( {
@@ -22,8 +22,8 @@ class AppConfig {
 }
 
 class AppRun {
-  @Run()
-  @Inject('$rootScope')
+  @decorators.Run()
+  @decorators.Inject('$rootScope')
   static runFactory($rootScope) {
     //$state.transitionTo('app.account')
     $rootScope.$on("$stateChangeError", console.log.bind(console));

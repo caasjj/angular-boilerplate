@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>base-resource.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>base-resource.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseResource</span> </span>{
+
+  constructor(name, transport, host) {
+    <span class="hljs-keyword">this</span>.transport = transport
+    host = host || <span class="hljs-string">''</span>
+    <span class="hljs-keyword">this</span>.route = <span class="hljs-string">`<span class="hljs-subst">${host}</span>/api/<span class="hljs-subst">${name}</span>`</span>
+  }
+
+  find(query) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.get( <span class="hljs-keyword">this</span>.route, query )
+  }
+
+  findOne(id) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.get( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>`</span> )
+  }
+
+  create(params) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.post( <span class="hljs-keyword">this</span>.route, params )
+  }
+
+  update(id, params) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.put( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>`</span>, params )
+  }
+
+  <span class="hljs-keyword">delete</span>(id) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.delete( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>`</span> )
+  }
+
+  associate(id, associationName, associationId) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.post( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>/<span class="hljs-subst">${associationName}</span>/<span class="hljs-subst">${associationId}</span>`</span> )
+  }
+
+  createAndAssociate(id, associationName, associationParams) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.post( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>/<span class="hljs-subst">${associationName}</span>`</span>, associationParams)
+  }
+
+  dissociate(id, associationName, associationId) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.delete( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>/<span class="hljs-subst">${associationName}</span>/<span class="hljs-subst">${associationId}</span>`</span> )
+  }
+
+  populate(id, associationName) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.get( <span class="hljs-string">`<span class="hljs-subst">${this.route}</span>/<span class="hljs-subst">${id}</span>/<span class="hljs-subst">${associationName}</span>`</span>)
+  }
+
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> BaseResource</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

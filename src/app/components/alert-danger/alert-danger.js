@@ -3,15 +3,13 @@
  * @copyright Copyright (c) 2015, Martin Micunda
  * @license   GPL-3.0
  */
-'use strict';
+'use strict'
+import decorators from '../../app'
 
-import {View, Component, Inject} from '../../app'; // jshint unused: false
-
-//start-non-standard
-@Component( {
+@decorators.Component( {
   selector: 'alert-danger'
 } )
-@View( {
+@decorators.View( {
   template: `
         <div ng-if="vm.hasError" class="row">
             <div class="col-md-12 col-sm-12">

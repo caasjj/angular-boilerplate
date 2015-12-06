@@ -3,13 +3,13 @@
  */
 'use strict'
 import BaseResource from '../base-resource'
-import {Service, Inject} from '../../../app'
+import decorators from '../../../app'
 
-@Service({
+@decorators.Service({
   serviceName: 'UserResource'
 })
 
-@Inject('$http')
+@decorators.Inject('$http')
 
 class UserResource extends BaseResource {
 

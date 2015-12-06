@@ -2,13 +2,13 @@
  * Created by caasjj on 11/3/15.
  */
 'use strict'
-import {Component, View, Inject} from '../../app'
+import decorators from '../../app'
 import template from './footer.template.html!text'
-@Component({
+@decorators.Component({
   selector: 'footer'
 })
 
-@View({
+@decorators.View({
   template: template
 })
 

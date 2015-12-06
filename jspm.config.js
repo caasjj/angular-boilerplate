@@ -17,13 +17,12 @@ System.config({
   map: {
     "angular": "github:angular/bower-angular@1.4.7",
     "angular-animate": "github:angular/bower-angular-animate@1.4.7",
-    "angular-aria": "github:angular/bower-angular-aria@1.4.7",
+    "angular-jwt": "npm:angular-jwt@0.0.9",
     "angular-material": "github:angular/bower-material@0.11.4",
     "angular-messages": "github:angular/bower-angular-messages@1.4.7",
     "angular-mocks": "github:angular/bower-angular-mocks@1.4.7",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.4.7",
-    "angular-ui-bootstrap": "npm:angular-ui-bootstrap@0.14.3",
-    "angular-ui-router": "npm:angular-ui-router@0.2.15",
+    "angular-ui-router": "github:angular-ui/ui-router@0.2.15",
     "angular-ui/bootstrap-bower": "github:angular-ui/bootstrap-bower@0.14.3",
     "babel": "npm:babel-core@5.8.33",
     "babel-runtime": "npm:babel-runtime@5.8.29",
@@ -32,12 +31,18 @@ System.config({
     "chai": "npm:chai@3.4.1",
     "chalk": "npm:chalk@1.1.1",
     "core-js": "npm:core-js@1.2.3",
+    "crap": "npm:crap",
     "css": "github:systemjs/plugin-css@0.1.19",
     "font-awesome": "npm:font-awesome@4.4.0",
     "fyockm/bootstrap-css-only": "github:fyockm/bootstrap-css-only@3.3.5",
     "lodash/lodash": "github:lodash/lodash@3.10.1",
+    "models": "/model-templates/Models.js",
     "moment": "npm:moment@2.10.6",
+    "olooney/attache-pluralize-js": "github:olooney/attache-pluralize-js@master",
     "text": "github:systemjs/plugin-text@0.0.3",
+    "github:angular-ui/ui-router@0.2.15": {
+      "angular": "github:angular/bower-angular@1.4.7"
+    },
     "github:angular/bower-angular-animate@1.4.7": {
       "angular": "github:angular/bower-angular@1.4.7"
     },
@@ -70,15 +75,6 @@ System.config({
     },
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
-    },
-    "npm:angular-ui-bootstrap@0.14.3": {
-      "angular": "npm:angular@1.4.7"
-    },
-    "npm:angular-ui-router@0.2.15": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
-    "npm:angular@1.4.7": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
@@ -115,6 +111,9 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:crap": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:deep-eql@0.1.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

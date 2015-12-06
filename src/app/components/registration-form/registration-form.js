@@ -1,12 +1,12 @@
-import {Component, View, Inject} from '../../app'
+import decorators from '../../app'
 import template from './registration-form.template.html!text'
-@Component({
+@decorators.Component({
   selector: 'registration-form'
 })
-@View({
+@decorators.View({
   template: template
 })
-@Inject('AuthService')
+@decorators.Inject('AuthService')
 class RegistrationFormController {
 
   constructor(AuthService) {

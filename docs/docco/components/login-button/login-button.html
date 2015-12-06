@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>login-button.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>login-button.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> decorators <span class="hljs-keyword">from</span> <span class="hljs-string">'../../app'</span>
+<span class="hljs-keyword">import</span> template <span class="hljs-keyword">from</span> <span class="hljs-string">'./login-button.template.html!text'</span>
+
+function _clearForm(form) {
+  this.username = null
+  this.password = null
+  form.$setUntouched()
+  form.$setPristine()
+  <span class="hljs-keyword">this</span>._isOpen = <span class="hljs-literal">false</span>
+}
+
+@decorators.Component( {
+  selector: <span class="hljs-string">'login-button'</span>
+} )
+
+@decorators.View( {
+  template: template,
+  bindToController: {
+    buttonDirection: <span class="hljs-string">'@'</span>,
+    currentUser: <span class="hljs-string">'='</span>,
+    badLogin: <span class="hljs-string">'=badLogin'</span>,
+  },
+
+  link: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">scope, element</span>) </span>{
+    <span class="hljs-keyword">if</span> (scope.vm.buttonDirection === <span class="hljs-string">'right'</span>) {
+      element.addClass( <span class="hljs-string">'direction-right'</span> )
+    } <span class="hljs-keyword">else</span> {
+      element.addClass( <span class="hljs-string">'direction-left'</span> )
+    }
+    angular.element( <span class="hljs-built_in">document</span> ).on( <span class="hljs-string">'click'</span>, () =&gt; {
+      scope.vm._isOpen = <span class="hljs-literal">false</span>
+      scope.$apply()
+    } )
+    element.on( <span class="hljs-string">'click'</span>, ($event) =&gt; {
+      $event.stopPropagation()
+    } )
+  }
+} )
+
+@decorators.Inject( <span class="hljs-string">'AuthService'</span>, <span class="hljs-string">'$timeout'</span> )
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">loginButtonController</span> </span>{
+
+  constructor(AuthService, $timeout) {
+
+    <span class="hljs-keyword">this</span>.AuthService = AuthService
+    <span class="hljs-keyword">this</span>._timeout = $timeout
+    <span class="hljs-keyword">this</span>._isOpen = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">this</span>.label = <span class="hljs-string">"Login"</span>
+    <span class="hljs-keyword">this</span>._submitted = <span class="hljs-literal">false</span>
+
+  }
+
+  toggle($event) {
+    $event &amp;&amp; $event.stopPropagation()
+    <span class="hljs-keyword">this</span>._isOpen = !<span class="hljs-keyword">this</span>._isOpen
+    <span class="hljs-keyword">this</span>._submitted = <span class="hljs-literal">false</span>
+  }
+
+  login(form) {
+
+    <span class="hljs-keyword">this</span>._submitted = <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._isOpen) {
+      <span class="hljs-keyword">this</span>._isOpen = <span class="hljs-literal">true</span>
+      <span class="hljs-keyword">this</span>._submitted = <span class="hljs-literal">false</span>
+      <span class="hljs-keyword">return</span>
+    }
+    <span class="hljs-keyword">if</span> (!form.$valid || <span class="hljs-keyword">this</span>.currentUser) <span class="hljs-keyword">return</span>
+
+    <span class="hljs-keyword">let</span> credentials = {
+      strategy: <span class="hljs-string">'local'</span>,
+      username: <span class="hljs-keyword">this</span>.username,
+      password: <span class="hljs-keyword">this</span>.password
+    }
+
+    <span class="hljs-keyword">this</span>.AuthService.login( credentials )
+        .then( res =&gt; {
+          <span class="hljs-keyword">this</span>.currentUser = res.username
+          _clearForm.call( <span class="hljs-keyword">this</span>, form )
+        } )
+        .catch( (err) =&gt; {
+          <span class="hljs-keyword">this</span>.badLogin = <span class="hljs-literal">true</span>
+          <span class="hljs-keyword">this</span>._timeout( () =&gt; {
+            <span class="hljs-keyword">this</span>.badLogin = <span class="hljs-literal">false</span>
+          }, <span class="hljs-number">2500</span> )
+        } )
+  }
+
+  logout(form) {
+    <span class="hljs-keyword">this</span>.currentUser = <span class="hljs-literal">null</span>
+    _clearForm.call( <span class="hljs-keyword">this</span>, form )
+  }
+
+  detectEnter($event, form) {
+    <span class="hljs-keyword">if</span> ($event.charCode === <span class="hljs-number">13</span>) {
+      <span class="hljs-keyword">this</span>.login( form )
+    }
+  }
+
+
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> loginButtonController</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
